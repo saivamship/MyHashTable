@@ -1,0 +1,125 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.math.*;
+
+
+
+public class MyHashTable<T>{
+	public class Node<T>
+	{
+     	public int key;
+     	public T payload;
+     	public boolean exists;		//true if exists or false if deleted
+     	public Node next;
+     	public int attempts = 0;
+     	
+     	public Node(T value) {
+     		payload = value;
+     	}
+     	
+     	public void delete() {
+     		exists = false;
+     	}
+	}
+	
+	
+	private Node [] array;
+	private static int TABLE_SIZE = 11;
+	private int R = 7;
+	private int filledSize;
+	
+	public MyHashTable()
+	{
+		this(TABLE_SIZE);
+	}
+	
+	public MyHashTable(int size) {
+		array = new Node[size];
+	}
+	
+	private int hash(int key)
+    {
+       int hashVal = key % array.length;
+       return hashVal;
+    }
+	private int probing(int key)
+	{
+		int hashValue = R - (key % R);
+		System.out.println("Probing: " + hashValue);
+		return hashValue;
+	}
+	
+	public Node getNode(int key)
+	{
+		int hashVal = hash(key);
+		Node hashBucket = array[hashVal];
+		
+		while (hashBucket != null && hashBucket.key != key) {
+			hashBucket = hashBucket.next;
+		} 
+		return hashBucket;
+	}
+	
+	public void insertNode(Node x)
+	{
+		filledSize++;
+		int hashVal = hash(x.key);
+		Node hashBucket = array[hashVal];
+		
+		if (hashBucket == null) {
+			array[hashVal] = x;
+		} else {
+			Node newNode = new Node(probing(x.key));
+			T payload = (T) x.payload;
+			put(probing(x.key), payload);
+		}
+	}
+	
+	public void removeNode(int key)
+	{
+		filledSize--;
+		Node currentNode = getNode(key);
+		currentNode.delete();
+	}
+
+	public void emptyNode()
+	{
+		filledSize = 0;
+		for(int i = 0; i < array.length; i++)
+		{
+			array[i] = null;
+		}
+	}
+	
+	public void rehash()
+	{
+		TABLE_SIZE *= 2;
+		R *= 2;
+		Node[] newArray = new Node[TABLE_SIZE];
+		for (Node n : array) {
+			int hashVal = hash(n.key);
+			newArray[hashVal] = new Node(n.payload);
+		}
+		
+		array = newArray;
+	}
+	
+	public void put(int key, T value) {
+		Node newNode = new Node(value);
+		newNode.key = key;
+		insertNode(newNode);
+	}
+	
+	public Object get(int key) {
+		return getNode(key).payload;
+	}
+	
+	public void delete(int key) {
+		removeNode(key);
+	}
+	
+	
+}
+
+
