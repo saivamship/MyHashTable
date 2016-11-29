@@ -1,0 +1,73 @@
+1import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.math.*;
+
+
+
+public class Main {
+	public static void main (String [] args)
+	{
+	
+		MyHashTable map = new MyHashTable();
+
+		Scanner input = new Scanner(System.in);
+		boolean option = false;
+		while(!option)
+		{
+		
+				
+		
+				
+				 System.out.println("Please enter the number corresponding to what you want to do!");
+				 System.out.println("1. Insert");
+				 System.out.println("2. Get" );
+			     System.out.println("3. Remove");
+			     System.out.println("4. Empty");
+			     System.out.println("5. Exit");
+			     System.out.println("6. Rehash");
+			     System.out.println("7. Print All");
+			     
+				
+			     int choice = input.nextInt();
+			     int keyValue;
+					
+				String Value;
+				switch (choice) {
+	            case 1:        
+	            		System.out.println("Please enter the value for Key: ");
+	            		keyValue = input.nextInt();
+	            		input.nextLine();
+				
+	            		System.out.println("Please enter the value for Value: ");
+	            		Value = input.nextLine();
+	            		map.put(keyValue, Value);
+	                     break;
+	            case 2: System.out.println("Please enter the value for Key: ");
+        				keyValue = input.nextInt();
+        				input.nextLine(); 
+	            	System.out.println(map.get(keyValue));
+	                     break;
+	            case 3: System.out.println("Please enter the value for Key: ");
+						keyValue = input.nextInt();
+						input.nextLine(); 
+	            		map.removeNode(keyValue);
+	                     break;
+	            case 4:  
+	            	 	map.emptyNode();
+	                     break;
+	                     
+	            case 5:  
+	            		option =true;
+	                     break;
+	                     
+	            case 6: 
+	            	map.rehash();
+	            	break;
+	            case 7:
+	            	break;
+				}
+				
+		}
+	}
+}
